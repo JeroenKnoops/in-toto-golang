@@ -16,6 +16,7 @@ import (
 	"time"
 
 	slsa "github.com/in-toto/in-toto-golang/in_toto/slsa_provenance/v0.2"
+	spdx "github.com/in-toto/in-toto-golang/in_toto/spdx/v2.2"
 
 	"github.com/secure-systems-lab/go-securesystemslib/cjson"
 	"github.com/secure-systems-lab/go-securesystemslib/dsse"
@@ -75,10 +76,6 @@ const (
 	// StatementInTotoV01 is the statement type for the generalized link format
 	// containing statements. This is constant for all predicate types.
 	StatementInTotoV01 = "https://in-toto.io/Statement/v0.1"
-	// PredicateSPDX represents a SBOM using the SPDX standard.
-	// The SPDX mandates 'spdxVersion' field, so predicate type can omit
-	// version.
-	PredicateSPDX = "https://spdx.dev/Document"
 	// PredicateLinkV1 represents an in-toto 0.9 link.
 	PredicateLinkV1 = "https://in-toto.io/Link/v1"
 )
@@ -995,17 +992,10 @@ type LinkStatement struct {
 	Predicate Link `json:"predicate"`
 }
 
-/*
-SPDXStatement is the definition for an entire SPDX statement.
-This is currently not implemented. Some tooling exists here:
-https://github.com/spdx/tools-golang, but this software is still in
-early state.
-This struct is the same as the generic Statement struct but is added for
-completeness
-*/
+// SPDXStatement is the definition for an entire SPDX statement.
 type SPDXStatement struct {
 	StatementHeader
-	Predicate interface{} `json:"predicate"`
+	Predicate spdx.SPDXPredicate `json:"predicate"`
 }
 
 /*
